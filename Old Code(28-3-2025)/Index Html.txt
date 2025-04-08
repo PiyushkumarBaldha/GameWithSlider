@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real or Fake? AI Image Quiz</title>
+  <!-- Google Font for a modern look -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Real or Fake?</h1>
+    <p>Can you tell apart genuine photos from AI-generated fakes?</p>
+    <button id="start-btn">Start</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

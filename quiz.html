@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Game</title>
+  <link rel="stylesheet" href="quiz-style.css">
+</head>
+<body>
+  <div class="navigation">
+    <div id="question-nav"></div>
+  </div>
+  
+  <div class="quiz-container">
+    <h2 id="question-title">Question 1</h2>
+    <h4 id="score-container">Score: <span id="score">0</span></h4>
+    <img id="quiz-image" src="Img/Img1.jpg" alt="Quiz Image">
+    
+    <div id="progress-bar">
+      <div id="progress-bar-filled">0%</div>
+    </div>
+    
+    <h3 id="Choose-Your-Answer">Choose your answer</h3>
+    <div class="buttons-container">
+      <button class="answer-btn" id="real-btn">Real</button>
+      <button class="answer-btn" id="fake-btn">Fake</button>
+    </div>
+
+    <!-- Confidence Slider -->
+    <div class="confidence-slider-container">
+      <h4>Confidence Level:</h4>
+      <div class="slider-labels">
+        <span>1 (No Confidence)</span>
+        <span>6 (Confident)</span>
+      </div>
+      <input type="range" id="confidence-slider" min="1" max="6" step="1" value="3">
+      <div class="slider-ticks">
+        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="quiz.js"></script>
+</body>
+</html>

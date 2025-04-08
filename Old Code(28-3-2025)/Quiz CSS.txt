@@ -1,0 +1,335 @@
+/* General Body Styling */ 
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #f79c99, #f7d7d2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    transition: background-color 0.5s ease;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+/* Navigation Buttons */
+.nav-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.nav-btn {
+    background-color: #ddd;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.nav-btn.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+.nav-btn:hover {
+    background-color: #bbb;
+    transform: scale(1.1);
+}
+
+/* Quiz Container */
+.quiz-container {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    height: auto;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: visible;
+    transition: background 0.5s ease;
+    animation: fadeIn 1s ease-in-out;
+}
+#question-title{
+    margin: 10px;
+    position: relative;
+}
+
+#score-container {
+    margin: 5px;
+    text-align: right;
+    position: relative;
+}
+
+/* Image Styling */
+#quiz-image {
+    width: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+}
+
+/* Progress Bar */
+#progress-bar {
+    width: 100%;
+    background-color: #e0e0e0;
+    height: 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#progress-bar-filled {
+    height: 100%;
+    background-color: #4caf50;
+    border-radius: 10px;
+    width: 0%;
+    text-align: center;
+    color: white;
+    line-height: 20px;
+    transition: width 0.5s ease-in-out;
+}
+
+/* Answer Buttons */
+.buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* General Button Styling */
+.answer-btn {
+    padding: 15px 20px;
+    font-size: 18px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 45%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover Effects */
+.answer-btn:hover {
+    background-color: #333;
+    transform: scale(1.1);
+    box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Real Button */
+#real-btn {
+    background-color: #4caf50;
+}
+
+#real-btn:hover {
+    background-color: #388e3c;
+}
+
+/* Fake Button */
+#fake-btn {
+    background-color: #ff9800;
+}
+
+#fake-btn:hover {
+    background-color: #f57c00;
+}
+
+/* Confidence Buttons */
+.confidence-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.confidence-btn {
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
+    min-width: 110px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.end-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.end-btn {
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 30%;
+    min-width: 110px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.end-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+#finish-btn{
+    background-color: #4caf50;
+    color: white;
+}
+
+#playagain-btn{
+    background-color: #fa3803;
+    color: white;
+}
+
+
+
+/* Hover Effects for Confidence Buttons */
+.confidence-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+#confident-btn {
+    background-color: #4caf50;
+    color: white;
+}
+
+#confident-btn:hover {
+    background-color: #388e3c;
+}
+
+#not-sure-btn {
+    background-color: #fbc02d;
+    color: black;
+}
+
+#not-sure-btn:hover {
+    background-color: #f57c00;
+}
+
+#not-confident-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+#not-confident-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* Result Page Styling */
+.result-container {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+}
+
+.result-container h2 {
+    font-size: 26px;
+    color: #333;
+}
+
+.result-container p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Stars */
+.stars {
+    margin: 10px 0;
+    font-size: 30px;
+}
+.star {
+    color: gold;
+    animation: glow 1s infinite alternate;
+}
+.star.faded {
+    color: lightgray;
+    animation: none;
+}
+
+/* Play Again Button */
+.play-again {
+    background: linear-gradient(135deg, #4caf50, #45a049);
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.play-again:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0px 0px 5px gold;
+    }
+    to {
+        text-shadow: 0px 0px 15px gold;
+    }
+}
+
+/* Responsive Fixes */
+@media (max-width: 500px) {
+    .quiz-container {
+        width: 90%;
+        max-width: 360px;
+        padding: 15px;
+    }
+
+    .buttons-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .answer-btn {
+        width: 100%;
+    }
+
+    .confidence-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .confidence-btn {
+        width: 100%;
+    }
+}

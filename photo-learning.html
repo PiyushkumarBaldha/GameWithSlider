@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn About Photos</title>
+  <link rel="stylesheet" href="photo-learning.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Learn About Photos</h1>
+    
+    <div class="quiz-results" id="quiz-results">
+      <!-- Quiz results will be inserted here by JavaScript -->
+    </div>
+    
+    <div class="image-container">
+      <img id="featured-image" src="Img/learning1.jpg" alt="Featured Photo">
+    </div>
+    
+    <div class="learning-options">
+      <div class="option-card" data-topic="detection">
+        <h3>How to Detect Fake Photos</h3>
+        <p>Learn techniques to identify manipulated images and spot inconsistencies.</p>
+      </div>
+      
+      <div class="option-card" data-topic="ethics">
+        <h3>Photo Ethics</h3>
+        <p>Understand the ethical considerations around photo manipulation.</p>
+      </div>
+      
+      <div class="option-card" data-topic="tools">
+        <h3>Common Editing Tools</h3>
+        <p>Discover the tools often used to create fake photos.</p>
+      </div>
+      
+      <div class="option-card" data-topic="history">
+        <h3>History of Photo Manipulation</h3>
+        <p>Explore how photo manipulation has evolved over time.</p>
+      </div>
+    </div>
+    
+    <div id="detection-info" class="info-section">
+      <h2>How to Detect Fake Photos</h2>
+      <p>Here are some techniques to help identify manipulated images:</p>
+      <ul>
+        <li><strong>Check the edges:</strong> Look for blurry or irregular edges around objects.</li>
+        <li><strong>Examine shadows:</strong> Inconsistent shadow directions can reveal manipulation.</li>
+        <li><strong>Look for pixelation:</strong> Areas that have been edited might show unusual pixel patterns.</li>
+        <li><strong>Check metadata:</strong> Image metadata can sometimes reveal editing software used.</li>
+        <li><strong>Reverse image search:</strong> Search for the image online to find original versions.</li>
+      </ul>
+      <p>Remember, even professionals can be fooled by sophisticated manipulations!</p>
+    </div>
+    
+    <div id="ethics-info" class="info-section">
+      <h2>Photo Ethics</h2>
+      <p>Photo manipulation raises important ethical questions:</p>
+      <ul>
+        <li><strong>Journalism:</strong> News photos should never be manipulated in ways that change their meaning.</li>
+        <li><strong>Advertising:</strong> Many countries have regulations about how much models can be digitally altered.</li>
+        <li><strong>Social media:</strong> Filters and edits can create unrealistic beauty standards.</li>
+        <li><strong>Historical photos:</strong> Altering historical images can distort our understanding of the past.</li>
+      </ul>
+      <p>Always consider the context and potential impact before editing a photo.</p>
+    </div>
+    
+    <div id="tools-info" class="info-section">
+      <h2>Common Editing Tools</h2>
+      <p>These are some of the most frequently used tools for photo manipulation:</p>
+      <ul>
+        <li><strong>Adobe Photoshop:</strong> The industry standard for professional image editing.</li>
+        <li><strong>GIMP:</strong> A free and open-source alternative to Photoshop.</li>
+        <li><strong>FaceApp:</strong> Specializes in facial transformations and aging effects.</li>
+        <li><strong>Deepfake software:</strong> Uses AI to create realistic face swaps in videos.</li>
+        <li><strong>Lightroom:</strong> Primarily for color correction but can be used for manipulation.</li>
+      </ul>
+      <p>While these tools can be used creatively, they can also be misused to deceive.</p>
+    </div>
+    
+    <div id="history-info" class="info-section">
+      <h2>History of Photo Manipulation</h2>
+      <p>Photo manipulation is nearly as old as photography itself:</p>
+      <ul>
+        <li><strong>1800s:</strong> Early photographers would combine multiple negatives to create "spirit photos."</li>
+        <li><strong>1920s-30s:</strong> Stalin's regime famously altered photos to remove purged officials.</li>
+        <li><strong>1980s:</strong> Digital editing began with the development of programs like Photoshop.</li>
+        <li><strong>2000s:</strong> Social media made photo filters widely accessible to the public.</li>
+        <li><strong>2010s-present:</strong> AI-powered tools made manipulation more sophisticated than ever.</li>
+      </ul>
+      <p>Understanding this history helps us contextualize today's manipulated images.</p>
+    </div>
+    
+    <button class="back-btn" id="back-btn">Next</button>
+  </div>
+
+  <script src="photo-learning.js"></script>
+</body>
+</html>

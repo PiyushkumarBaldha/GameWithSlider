@@ -1,0 +1,88 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const csvFilePath = path.join(__dirname, 'quiz_data.csv');
+
+app.use(bodyParser.json());
+app.use(express.static(__dirname));
+
+// Track user sessions and play counts
+const userSessions = new Map();
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+function getNextSessionId() {
+  const now = new Date();
+  return `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-${now.getHours().toString().padStart(2,'0')}${now.getMinutes().toString().padStart(2,'0')}${now.getSeconds().toString().padStart(2,'0')}`;
+}
+
+function appendDataToCSV(data) {
+  const headers = [
+    'sessionId',
+    'playNumber',
+    'timestamp',
+    'age',
+    'profession',
+    'score',
+    'answers',
+    'confidence',
+    'timeTaken'
+  ];
+
+  const row = headers.map(header => {
+    let value = data[header];
+    if (Array.isArray(value)) {
+      value = value.join(';');
+    }
+    if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+      value = `"${value.replace(/"/g, '""')}"`;
+    }
+    return value || '';
+  }).join(',');
+
+  if (!fs.existsSync(csvFilePath) || fs.statSync(csvFilePath).size === 0) {
+    fs.writeFileSync(csvFilePath, headers.join(',') + '\n');
+  }
+
+  fs.appendFileSync(csvFilePath, row + '\n');
+  console.log("Data saved to CSV!");
+}
+
+app.post('/submitQuizData', (req, res) => {
+  try {
+    const { age, profession } = req.body;
+    const userKey = `${age}-${profession}`;
+    
+    if (!userSessions.has(userKey)) {
+      userSessions.set(userKey, {
+        sessionId: getNextSessionId(),
+        playCount: 0
+      });
+    }
+
+    const sessionInfo = userSessions.get(userKey);
+    sessionInfo.playCount += 1;
+    
+    const csvData = {
+      ...req.body,
+      sessionId: sessionInfo.sessionId,
+      playNumber: `${sessionInfo.sessionId.split('-')[1]}.${sessionInfo.playCount - 1}`
+    };
+
+    appendDataToCSV(csvData);
+    res.status(200).json({ message: "Data saved!" });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Error saving data." });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
