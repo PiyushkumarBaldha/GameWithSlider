@@ -23,6 +23,7 @@ let userAnswers = new Array(totalQuestions).fill(null);
 let userConfidence = new Array(totalQuestions).fill(null);
 let timerInterval;
 const quizStartTime = Date.now();
+let isReviewMode = false;
 
 // This will store our randomized image paths and their correct answers
 let imageSet = [];
@@ -63,7 +64,18 @@ document.addEventListener("DOMContentLoaded", function () {
     updateQuestion();
 });
 
-// Initialize the randomized image set with complete shuffling
+function createNavigation() {
+    const navContainer = document.getElementById("question-nav");
+    
+    for (let i = 0; i < totalQuestions; i++) {
+        let btn = document.createElement("button");
+        btn.textContent = i + 1;
+        btn.classList.add("nav-btn");
+        btn.addEventListener("click", () => goToQuestion(i));
+        navContainer.appendChild(btn);
+    }
+}
+
 function initializeImageSet() {
     // Total number of images available in each folder
     const totalImages = 50;
@@ -101,7 +113,6 @@ function initializeImageSet() {
     console.log("Selected images:", imageSet); // For debugging
 }
 
-// Fisher-Yates shuffle algorithm for complete randomization
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -110,44 +121,15 @@ function shuffleArray(array) {
     return array;
 }
 
-// Navigation Functions
-function createNavigation() {
-    const navContainer = document.createElement("div");
-    navContainer.id = "question-nav";
-    document.body.insertBefore(navContainer, document.body.firstChild);
-
-    for (let i = 0; i < totalQuestions; i++) {
-        let btn = document.createElement("button");
-        btn.textContent = i + 1;
-        btn.classList.add("nav-btn");
-        btn.style.backgroundColor = "yellow";
-        btn.addEventListener("click", () => goToQuestion(i));
-        navContainer.appendChild(btn);
-    }
-}
-
-function goToQuestion(index) {
-    currentQuestionIndex = index;
-    updateQuestion();
-}
-
-// Timer Functions
 function initializeTimer() {
-    const timerElement = document.createElement("div");
-    timerElement.id = "timer";
-    timerElement.style.fontSize = "20px";
-    timerElement.style.fontWeight = "bold";
-    timerElement.style.marginTop = "10px";
-    document.getElementById("question-nav").parentNode.insertBefore(timerElement, document.getElementById("question-nav").nextSibling);
-
     let totalTime = 600;
     function updateTimer() {
         const minutes = Math.floor(totalTime / 60);
         const seconds = totalTime % 60;
-        timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        document.getElementById("timer").textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
         if (totalTime <= 60) {
-            timerElement.style.color = "red";
+            document.getElementById("timer").style.color = "red";
         }
 
         if (totalTime <= 0) {
@@ -159,63 +141,65 @@ function initializeTimer() {
     timerInterval = setInterval(updateTimer, 1000);
 }
 
-// Question Handling
+function setupEventListeners() {
+    document.getElementById("real-btn").addEventListener("click", () => checkAnswer(true));
+    document.getElementById("fake-btn").addEventListener("click", () => checkAnswer(false));
+    
+    document.getElementById("confidence-slider").addEventListener("input", function() {
+        userConfidence[currentQuestionIndex] = parseInt(this.value);
+    });
+    
+    document.getElementById('review-btn').addEventListener('click', toggleReviewMode);
+    document.getElementById('submit-btn').addEventListener('click', submitQuiz);
+}
+
 function updateQuestion() {
     setGradientBackground();
-    document.querySelector("h2").textContent = "Question " + (currentQuestionIndex + 1);
+    document.getElementById("question-title").textContent = "Question " + (currentQuestionIndex + 1);
     
     // Get the image for this question from the randomized set
     document.getElementById("quiz-image").src = imageSet[currentQuestionIndex].path;
     
-    // Reset slider to default value (3) for new questions
-    if (userConfidence[currentQuestionIndex] === null) {
-        document.getElementById("confidence-slider").value = 3;
-    } else {
-        document.getElementById("confidence-slider").value = userConfidence[currentQuestionIndex];
+    // Reset button colors
+    document.getElementById("real-btn").style.backgroundColor = "";
+    document.getElementById("fake-btn").style.backgroundColor = "";
+    
+    // Set confidence slider to saved value or default
+    document.getElementById("confidence-slider").value = userConfidence[currentQuestionIndex] || 3;
+    
+    // If the question was already answered, show the answer
+    if (userAnswers[currentQuestionIndex] !== null) {
+        document.getElementById("real-btn").style.backgroundColor = userAnswers[currentQuestionIndex] === "Real" ? "darkgreen" : "";
+        document.getElementById("fake-btn").style.backgroundColor = userAnswers[currentQuestionIndex] === "Fake" ? "red" : "";
     }
 }
 
 function checkAnswer(isReal) {
-    if (userAnswers[currentQuestionIndex] !== null) return;
-    
     let userAnswer = isReal ? "Real" : "Fake";
     userAnswers[currentQuestionIndex] = userAnswer;
+    userConfidence[currentQuestionIndex] = parseInt(document.getElementById("confidence-slider").value);
     
-    if (userAnswer === correctAnswers[currentQuestionIndex]) {
-        score += 10;
-    }
-    
-    updateScore();
     markAnswered(currentQuestionIndex);
     updateProgress();
-
-    let nextIndex = findNextUnanswered(currentQuestionIndex);
-    if (nextIndex !== -1) {
-        currentQuestionIndex = nextIndex;
-        updateQuestion();
+    
+    if (isReviewMode) {
+        updateQuestionDisplayForReview();
     } else {
-        endQuiz();
+        let nextIndex = findNextUnanswered(currentQuestionIndex);
+        if (nextIndex !== -1) {
+            currentQuestionIndex = nextIndex;
+            updateQuestion();
+        } else {
+            toggleReviewMode();
+        }
     }
-}
-
-function findNextUnanswered(current) {
-    for (let i = current + 1; i < totalQuestions; i++) {
-        if (userAnswers[i] === null) return i;
-    }
-    for (let i = 0; i <= current; i++) {
-        if (userAnswers[i] === null) return i;
-    }
-    return -1;
 }
 
 function markAnswered(index) {
     const navButtons = document.querySelectorAll(".nav-btn");
     const button = navButtons[index];
-    if (userAnswers[index] === correctAnswers[index]) {
-        button.style.backgroundColor = "green";
-    } else {
-        button.style.backgroundColor = "red";
-    }
+    button.classList.add(isReviewMode ? "review" : "answered");
+    button.classList.remove(isReviewMode ? "answered" : "review");
 }
 
 function updateProgress() {
@@ -229,13 +213,96 @@ function updateScore() {
     document.getElementById("score").textContent = score;
 }
 
-// End Quiz Functions
+function goToQuestion(index) {
+    currentQuestionIndex = index;
+    if (isReviewMode) {
+        updateQuestionDisplayForReview();
+    } else {
+        updateQuestion();
+    }
+}
+
+function findNextUnanswered(current) {
+    for (let i = current + 1; i < totalQuestions; i++) {
+        if (userAnswers[i] === null) return i;
+    }
+    for (let i = 0; i <= current; i++) {
+        if (userAnswers[i] === null) return i;
+    }
+    return -1;
+}
+
+function toggleReviewMode() {
+    isReviewMode = !isReviewMode;
+    
+    if (isReviewMode) {
+        document.getElementById('review-btn').textContent = 'Continue Quiz';
+        document.getElementById('submit-btn').style.display = 'block';
+        
+        document.querySelectorAll('.nav-btn').forEach((btn, index) => {
+            if (userAnswers[index] !== null) {
+                btn.classList.add('review');
+                btn.classList.remove('answered');
+            }
+        });
+        
+        updateQuestionDisplayForReview();
+    } else {
+        document.getElementById('review-btn').textContent = 'Review Answers';
+        document.getElementById('submit-btn').style.display = 'none';
+        
+        document.querySelectorAll('.nav-btn').forEach((btn, index) => {
+            if (userAnswers[index] !== null) {
+                btn.classList.add('answered');
+                btn.classList.remove('review');
+            }
+        });
+        
+        updateQuestion();
+    }
+}
+
+function updateQuestionDisplayForReview() {
+    setGradientBackground();
+    document.getElementById("question-title").textContent = "Review Question " + (currentQuestionIndex + 1);
+    document.getElementById("quiz-image").src = imageSet[currentQuestionIndex].path;
+    
+    const currentAnswer = userAnswers[currentQuestionIndex];
+    if (currentAnswer !== null) {
+        document.getElementById("real-btn").style.backgroundColor = currentAnswer === "Real" ? "darkgreen" : "";
+        document.getElementById("fake-btn").style.backgroundColor = currentAnswer === "Fake" ? "red" : "";
+    }
+    
+    document.getElementById("confidence-slider").value = userConfidence[currentQuestionIndex] || 3;
+}
+
+function submitQuiz() {
+    const unanswered = userAnswers.filter(answer => answer === null).length;
+    if (unanswered > 0) {
+        if (!confirm(`You have ${unanswered} unanswered questions. Are you sure you want to submit?`)) {
+            return;
+        }
+    }
+    
+    calculateFinalScore();
+    endQuiz();
+}
+
+function calculateFinalScore() {
+    score = 0;
+    for (let i = 0; i < totalQuestions; i++) {
+        if (userAnswers[i] === correctAnswers[i]) {
+            score += 10;
+        }
+    }
+    updateScore();
+}
+
 function endQuiz() {
     clearInterval(timerInterval);
     const quizEndTime = Date.now();
     const timeTaken = Math.floor((quizEndTime - quizStartTime) / 1000);
     
-    // Prepare the answers for reporting
     const answersReport = {};
     imageSet.forEach((img, index) => {
         answersReport[index] = {
@@ -255,10 +322,9 @@ function endQuiz() {
         timeTaken: timeTaken,
         sessionId: sessionId,
         playNumber: playNumber,
-        imageSet: imageSet // Include the image set for reference
+        imageSet: imageSet
     };
 
-    // Send data to Google Sheets
     sendDataToGoogleSheets(quizData);
 
     document.querySelector(".quiz-container").innerHTML = `
@@ -289,14 +355,18 @@ async function sendDataToGoogleSheets(quizData) {
             },
             body: JSON.stringify(quizData),
         });
-
-        console.log('Timestamp sent to Google Sheets.');
+        console.log('Data sent to Google Sheets.');
     } catch (error) {
-        console.error('Error sending timestamp:', error);
+        console.error('Error sending data:', error);
     }
 }
 
-// Utility Functions
+function setGradientBackground() {
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    const gradient = `linear-gradient(to bottom, ${colors[randomIndex][0]}, ${colors[randomIndex][1]})`;
+    document.body.style.background = gradient;
+}
+
 function generateSessionId() {
     return 'session_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
 }
@@ -310,21 +380,6 @@ function getPlayNumber() {
     }
     localStorage.setItem('playNumber', playNumber);
     return playNumber;
-}
-
-function setGradientBackground() {
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    const gradient = `linear-gradient(to bottom, ${colors[randomIndex][0]}, ${colors[randomIndex][1]})`;
-    document.body.style.background = gradient;
-}
-
-function setupEventListeners() {
-    document.getElementById("real-btn").addEventListener("click", () => checkAnswer(true));
-    document.getElementById("fake-btn").addEventListener("click", () => checkAnswer(false));
-    
-    document.getElementById("confidence-slider").addEventListener("input", function() {
-        userConfidence[currentQuestionIndex] = parseInt(this.value);
-    });
 }
 
 // Navigation Functions

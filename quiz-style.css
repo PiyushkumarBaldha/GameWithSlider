@@ -1,41 +1,76 @@
-/* General Body Styling */ 
+/* Reset & Global Body Styling */
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(to bottom, #f79c99, #f7d7d2);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    transition: background-color 0.5s ease;
-    overflow: hidden;
+}
+
+/* Main container to hold everything and center vertically */
+.main-container {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Header Container */
+.header-container {
+    width: 100%;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Navigation Buttons */
-.nav-container {
+.navigation {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
 }
 
 .nav-btn {
-    background-color: #ddd;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
     border: none;
-    padding: 10px;
-    border-radius: 5px;
+    background-color: #ddd;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s ease;
-}
-
-.nav-btn.active {
-    background-color: #4caf50;
-    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
 .nav-btn:hover {
-    background-color: #bbb;
     transform: scale(1.1);
+}
+
+.nav-btn.answered {
+    background-color: orange;
+}
+
+.nav-btn.review {
+    background-color: lightblue;
+}
+
+#timer {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
 }
 
 /* Quiz Container */
@@ -43,25 +78,22 @@ body {
     background: white;
     padding: 20px;
     border-radius: 15px;
-    width: 90%;
-    height: auto;
+    width: 100%;
     max-width: 500px;
     text-align: center;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    position: relative;
-    overflow: visible;
-    transition: background 0.5s ease;
     animation: fadeIn 1s ease-in-out;
 }
-#question-title{
-    margin: 10px;
-    position: relative;
+
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
-#score-container {
-    margin: 5px;
-    text-align: right;
-    position: relative;
+#question-title, #score-container {
+    margin: 0;
 }
 
 /* Image Styling */
@@ -71,7 +103,6 @@ body {
     object-fit: contain;
     border-radius: 10px;
     margin: 10px 0;
-    transition: all 0.3s ease;
 }
 
 /* Progress Bar */
@@ -80,8 +111,7 @@ body {
     background-color: #e0e0e0;
     height: 20px;
     border-radius: 10px;
-    margin-top: null;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    margin: 10px 0;
 }
 
 #progress-bar-filled {
@@ -98,13 +128,12 @@ body {
 /* Answer Buttons */
 .buttons-container {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
-/* General Button Styling */
 .answer-btn {
     padding: 15px 20px;
     font-size: 18px;
@@ -117,14 +146,12 @@ body {
     box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* Hover Effects */
 .answer-btn:hover {
     background-color: #333;
     transform: scale(1.1);
     box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.4);
 }
 
-/* Real Button */
 #real-btn {
     background-color: #4caf50;
 }
@@ -133,7 +160,6 @@ body {
     background-color: #388e3c;
 }
 
-/* Fake Button */
 #fake-btn {
     background-color: #ff9800;
 }
@@ -142,7 +168,7 @@ body {
     background-color: #f57c00;
 }
 
-/* Confidence Slider Styles */
+/* Confidence Slider */
 .confidence-slider-container {
     margin-top: 20px;
     width: 100%;
@@ -213,6 +239,77 @@ body {
     background: #388e3c;
 }
 
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.action-buttons button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+#review-btn {
+    background-color: #2196F3;
+    color: white;
+}
+
+#submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    display: none;
+}
+
+#review-btn:hover,
+#submit-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Result Page Styling */
+.result-container {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+}
+
+.result-container h2 {
+    font-size: 26px;
+    color: #333;
+}
+
+.result-container p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+}
+
+.stars {
+    margin: 10px 0;
+    font-size: 30px;
+}
+
+.star {
+    color: gold;
+    animation: glow 1s infinite alternate;
+}
+
+.star.faded {
+    color: lightgray;
+    animation: none;
+}
+
 .end-container {
     display: flex;
     flex-wrap: wrap;
@@ -238,67 +335,14 @@ body {
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
 }
 
-#finish-btn{
+#finish-btn {
     background-color: #4caf50;
     color: white;
 }
 
-#playagain-btn{
+#playagain-btn {
     background-color: #fa3803;
     color: white;
-}
-
-/* Result Page Styling */
-.result-container {
-    text-align: center;
-    padding: 20px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 1s ease-in-out;
-}
-
-.result-container h2 {
-    font-size: 26px;
-    color: #333;
-}
-
-.result-container p {
-    font-size: 20px;
-    font-weight: bold;
-    color: #555;
-}
-
-/* Stars */
-.stars {
-    margin: 10px 0;
-    font-size: 30px;
-}
-.star {
-    color: gold;
-    animation: glow 1s infinite alternate;
-}
-.star.faded {
-    color: lightgray;
-    animation: none;
-}
-
-/* Play Again Button */
-.play-again {
-    background: linear-gradient(135deg, #4caf50, #45a049);
-    border: none;
-    color: white;
-    font-size: 18px;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.play-again:hover {
-    transform: scale(1.1);
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Keyframe Animations */
@@ -325,8 +369,7 @@ body {
 /* Responsive Fixes */
 @media (max-width: 500px) {
     .quiz-container {
-        width: 90%;
-        max-width: 360px;
+        width: 100%;
         padding: 15px;
     }
 
@@ -341,5 +384,13 @@ body {
 
     .confidence-slider-container {
         padding: 0 10px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-buttons button {
+        width: 100%;
     }
 }

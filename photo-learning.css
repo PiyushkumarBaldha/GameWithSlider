@@ -63,7 +63,7 @@ h1 {
 .option-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-  background: linear-gradient(135deg, #96e6a1, #d4fc79);
+  background: linear-gradient(135deg, #FFFF66, #d4fc79);
 }
 
 .option-card h3 {
